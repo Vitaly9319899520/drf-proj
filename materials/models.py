@@ -4,8 +4,6 @@ from django.db import models
 class Lesson(models.Model):
     title = models.CharField(
         max_length=35,
-        blank=True,
-        null=True,
         verbose_name="Название",
         help_text="Укажите урок",
     )
