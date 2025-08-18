@@ -1,42 +1,28 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
-
-from materials.models import Lesson, Course, Subscription
-
+from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
+from rest_framework.serializers import ModelSerializer
+from materials.models import Course, Lesson
 
 
 class LessonSerializer(ModelSerializer):
     class Meta:
         model = Lesson
-        fields = '__all__'
-
+        fields = "__all__"
 
 
 class CourseSerializer(ModelSerializer):
-    lessons = LessonSerializer(many=True, read_only=True, source='lesson_set')
-
     class Meta:
         model = Course
         fields = '__all__'
 
 
 class CourseDetailSerializer(ModelSerializer):
-    lesson_count = SerializerMethodField()
-    lessons = LessonSerializer(many=True, read_only=True, source='lesson_set')
-    subscription = SerializerMethodField()
+    amount_of_lessons_in_course = SerializerMethodField()
+    lessons = LessonSerializer(many=True)
 
-    def get_lesson_count(self, course):
+    def get_amount_of_lessons_in_course(self, course):
         return Lesson.objects.filter(course=course).count()
-
-    def get_subscription(self, course):
-        user = self.context['request'].user
-        return Subscription.objects.all().filter(user=user).filter(course=course).exists()
 
     class Meta:
         model = Course
-        fields = ('title', 'description', 'lesson_count', 'lessons', 'subscription')
-
-
-class SubscriptionSerializer(ModelSerializer):
-    class Meta:
-        model = Subscription
-        fields = ("sign_of_subscription",)
+        fields = ('course_name', 'course_description', 'amount_of_lessons_in_course', 'lessons')
