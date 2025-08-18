@@ -1,28 +1,25 @@
 from rest_framework import serializers
-from rest_framework.fields import SerializerMethodField
-from rest_framework.serializers import ModelSerializer
 from materials.models import Course, Lesson
+from users.models import Payments
 
 
-class LessonSerializer(ModelSerializer):
+class LessonSerializer(serializers.ModelSerializer):
+    """ Сериализатор для урока."""
+
     class Meta:
         model = Lesson
-        fields = "__all__"
+        fields = ['name', 'description', 'video', 'course', ]
 
 
-class CourseSerializer(ModelSerializer):
-    class Meta:
-        model = Course
-        fields = '__all__'
+class CourseSerializer(serializers.ModelSerializer):
+    """ Сериализатор для курса."""
 
-
-class CourseDetailSerializer(ModelSerializer):
-    amount_of_lessons_in_course = SerializerMethodField()
-    lessons = LessonSerializer(many=True)
-
-    def get_amount_of_lessons_in_course(self, course):
-        return Lesson.objects.filter(course=course).count()
+    lesson_count = serializers.SerializerMethodField()
+    lesson = LessonSerializer(many=True, read_only=True, source="lesson_set")
 
     class Meta:
         model = Course
-        fields = ('course_name', 'course_description', 'amount_of_lessons_in_course', 'lessons')
+        fields = ['name', 'description', 'preview', 'lesson_count', 'lesson', ]
+
+    def get_lesson_count(self, instance):
+        return instance.lesson_set.count()
