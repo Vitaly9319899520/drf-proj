@@ -9,14 +9,14 @@ from users.serializers import PaymentsSerializer, CustomUserSerializer
 
 
 class CustomUserDetail(RetrieveAPIView):
-    """ Просмотр данных пользователя. """
+    """Просмотр данных пользователя."""
 
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
 
 class PaymentCreateAPIView(CreateAPIView):
-    """ Создание платежа. """
+    """Создание платежа."""
 
     queryset = Payments.objects.all()
     serializer_class = PaymentsSerializer
@@ -24,7 +24,7 @@ class PaymentCreateAPIView(CreateAPIView):
 
 
 class PaymentListAPIView(ListAPIView):
-    """ Список платежей. """
+    """Список платежей."""
 
     queryset = Payments.objects.all()
     serializer_class = PaymentsSerializer

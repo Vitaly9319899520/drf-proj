@@ -2,14 +2,20 @@ from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+    DestroyAPIView,
+)
 
 from on_learning.models import Course, Lesson
 from on_learning.serializers import CourseSerializer, LessonSerializer
 
 
 class CourseViewSet(ModelViewSet):
-    """ Представление для курса. """
+    """Представление для курса."""
 
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
@@ -18,14 +24,14 @@ class CourseViewSet(ModelViewSet):
 
 
 class LessonCreateAPIView(CreateAPIView):
-    """ Создание урока. """
+    """Создание урока."""
 
     serializer_class = LessonSerializer
     permission_classes = [permissions.AllowAny]
 
 
 class LessonListAPIView(ListAPIView):
-    """ Просмотр списка уроков. """
+    """Просмотр списка уроков."""
 
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
@@ -36,14 +42,14 @@ class LessonListAPIView(ListAPIView):
 
 
 class LessonRetrieveAPIView(RetrieveAPIView):
-    """ Просмотр одного урока. """
+    """Просмотр одного урока."""
 
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
 
 
 class LessonUpdateAPIView(UpdateAPIView):
-    """ Обновление одного урока. """
+    """Обновление одного урока."""
 
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
@@ -51,7 +57,7 @@ class LessonUpdateAPIView(UpdateAPIView):
 
 
 class LessonDeleteAPIView(DestroyAPIView):
-    """ Удаление урока. """
+    """Удаление урока."""
 
     queryset = Lesson.objects.all()
     permission_classes = [permissions.AllowAny]
